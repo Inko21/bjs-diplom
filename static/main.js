@@ -118,8 +118,6 @@ function main(){
     }
   });
 
-  let check = setInterval(() => {
-
   user1.addMoney({ currency: 'RUB', amount: 500000 }, (err, data) => {
     if (err) {
       console.error(`Ошибка при зачислении денег на счет пользователю ${user1.nickName}`);
@@ -152,8 +150,6 @@ function main(){
       console.log(data[0]);
     }
   });
-  clearInterval(timer1);
-  }, 1000);
 }
 
 main();
