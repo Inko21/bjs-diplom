@@ -64,13 +64,6 @@ class Profile {
 };
 
 // Вторая часть диплома
-const user1 = new Profile({
-  nickName: 'Vasya24',
-  name: {firstName: 'Vsiliy', lastName: 'Proshkin'},
-  password: '12345'
-});
-
-
 function main(){
   const user1 = new Profile({
     nickName: 'Vasya24',
@@ -86,35 +79,19 @@ function main(){
 
   user1.createUser((err, data) => {
     if (err) {
-      if (err.code === 409) {
-        user.authorize((err, data) => {
-          if (err) {
-            console.error('Не авторизован');
-          } else {
-            user.status = true;
-          }
-        });
-      }
-    } else {
-      user.status = true;
-      console.log(`Создан пользователь ${user.nickName}`);
+        console.error(`Ошибка при создании аккаунта ${user1.nickName}`);
     }
+    else {
+        console.log(`Аккаунт ${user1.nickName} успешно создан`);
+    };
   });
 
-  user2.createUser((err, data) => {
+  user1.authorize((err, data) => {
     if (err) {
-      if (err.code === 409) {
-        user.authorize((err, data) => {
-          if (err) {
-            console.error('Не авторизован');
-          } else {
-            user.status = true;
-          }
-        });
-      }
+      console.error('Не авторизован');
     } else {
+      console.log(`${user1.nickName} заходим в аккаунт`);
       user.status = true;
-      console.log(`Создан пользователь ${user.nickName}`);
     }
   });
 
@@ -129,15 +106,24 @@ function main(){
 
   user1.convertMoney({ fromCurrency: 'RUB', targetCurrency: 'NETCOIN', targetAmount: 100 }, (err, data) => {
     if (err) {
-      console.error(`Error converting money from RUB to NETCOIN`);
+      console.error(`Ошибка конвертации из "RUB" в "NETCOIN"`);
     } else {
       console.log(`Конвертация в 100 ${targetCurrency}`);
     }
   });
 
+  user2.createUser((err, data) => {
+    if (err) {
+        console.error(`Ошибка при создании аккаунта ${user2.nickName}`);
+    }
+    else {
+        console.log(`Аккаунт ${user2.nickName} успешно создан`);
+    };
+  });
+
   user1.transferMoney({ to: 'Foxy78', amount: 100 }, (err, data) => {
     if (err) {
-      console.error(`Error during transfer money to Foxy78`);
+      console.error(`Ошибка при попытке перевода валюты пользователю ${to}`);
     } else {
       console.log(`Пользователю переведено: 100`);
     }
