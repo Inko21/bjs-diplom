@@ -77,64 +77,60 @@ function main(){
     password: '54321'
   });
 
+
+  getStocks((err, data) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log(data[0]);
+    }
+  });
+
   user1.createUser((err, data) => {
     if (err) {
         console.error(`Ошибка при создании аккаунта ${user1.nickName}`);
     }
     else {
         console.log(`Аккаунт ${user1.nickName} успешно создан`);
+        user1.authorize((err, data) => {
+          if (err) {
+            console.error('Не авторизован');
+          } else {
+            console.log(`${user1.nickName} заходим в аккаунт`);
+            user.status = true;
+            user1.addMoney({ currency: 'RUB', amount: 500000 }, (err, data) => {
+              if (err) {
+                console.error(`Ошибка при зачислении денег на счет пользователю ${user1.nickName}`);
+              } else {
+                console.log(`Зачисленно 500000 руб на счет пользователю ${user1.nickName}`);
+                user1.money = true;
+                user1.convertMoney({ fromCurrency: 'RUB', targetCurrency: 'NETCOIN', targetAmount: 100 }, (err, data) => {
+                  if (err) {
+                    console.error(`Ошибка конвертации из "RUB" в "NETCOIN"`);
+                  } else {
+                    console.log(`Конвертация в 100 ${targetCurrency}`);
+                    user2.createUser((err, data) => {
+                      if (err) {
+                          console.error(`Ошибка при создании аккаунта ${user2.nickName}`);
+                      }
+                      else {
+                          console.log(`Аккаунт ${user2.nickName} успешно создан`);
+                          user1.transferMoney({ to: 'Foxy78', amount: 100 }, (err, data) => {
+                            if (err) {
+                              console.error(`Ошибка при попытке перевода валюты пользователю ${to}`);
+                            } else {
+                              console.log(`Пользователю переведено: 100`);
+                            }
+                          });
+                      };
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
     };
-  });
-
-  user1.authorize((err, data) => {
-    if (err) {
-      console.error('Не авторизован');
-    } else {
-      console.log(`${user1.nickName} заходим в аккаунт`);
-      user.status = true;
-    }
-  });
-
-  user1.addMoney({ currency: 'RUB', amount: 500000 }, (err, data) => {
-    if (err) {
-      console.error(`Ошибка при зачислении денег на счет пользователю ${user1.nickName}`);
-    } else {
-      console.log(`Зачисленно 500000 руб на счет пользователю ${user1.nickName}`);
-      user1.money = true;
-    }
-  });
-
-  user1.convertMoney({ fromCurrency: 'RUB', targetCurrency: 'NETCOIN', targetAmount: 100 }, (err, data) => {
-    if (err) {
-      console.error(`Ошибка конвертации из "RUB" в "NETCOIN"`);
-    } else {
-      console.log(`Конвертация в 100 ${targetCurrency}`);
-    }
-  });
-
-  user2.createUser((err, data) => {
-    if (err) {
-        console.error(`Ошибка при создании аккаунта ${user2.nickName}`);
-    }
-    else {
-        console.log(`Аккаунт ${user2.nickName} успешно создан`);
-    };
-  });
-
-  user1.transferMoney({ to: 'Foxy78', amount: 100 }, (err, data) => {
-    if (err) {
-      console.error(`Ошибка при попытке перевода валюты пользователю ${to}`);
-    } else {
-      console.log(`Пользователю переведено: 100`);
-    }
-  });
-
-  user1.getStocks((err, data) => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      console.log(data[0]);
-    }
   });
 }
 
