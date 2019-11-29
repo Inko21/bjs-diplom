@@ -53,14 +53,14 @@ class Profile {
       }
     );
   };
+};
 
-  getStocks(callback) {
-    return ApiConnector.getStocks((err, data) => {
-      console.log(`Текущий курс`);
-      callback(err, data);
-      }
-    );
-  };
+function getStocks(callback) {
+  return ApiConnector.getStocks((err, data) => {
+    console.log(`Текущий курс`);
+    callback(err, data);
+    }
+  );
 };
 
 // Вторая часть диплома
@@ -75,15 +75,6 @@ function main(){
     nickName: 'Foxy78',
     name: {firstName: 'Ekaterina', lastName: 'Zemlyanskaya'},
     password: '54321'
-  });
-
-
-  getStocks((err, data) => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      console.log(data[0]);
-    }
   });
 
   user1.createUser((err, data) => {
@@ -104,6 +95,10 @@ function main(){
               } else {
                 console.log(`Зачисленно 500000 руб на счет пользователю ${user1.nickName}`);
                 user1.money = true;
+                getStocks((err, data) => {
+                  if (err) {
+                    console.error(err.message);
+                  } 
                 user1.convertMoney({ fromCurrency: 'RUB', targetCurrency: 'NETCOIN', targetAmount: 100 }, (err, data) => {
                   if (err) {
                     console.error(`Ошибка конвертации из "RUB" в "NETCOIN"`);
@@ -125,6 +120,7 @@ function main(){
                       };
                     });
                   }
+                });
                 });
               }
             });
