@@ -1,8 +1,8 @@
 // Первая часть диплома:
 'use strict'
 class Profile {
-  constructor({nickName, name: {firstName, lastName}, password}){
-    this.nickName = nickName;
+  constructor({username, name: {firstName, lastName}, password}){
+    this.username = username;
     this.name = {
       firstName,
       lastName,
@@ -14,8 +14,8 @@ class Profile {
 
   createUser(callback) {
     return ApiConnector.createUser(
-      {nickName: this.nickName, name: this.name, password: this.password }, (err, data) => {
-      console.log(`Пользователь ${this.nickName} создан`);
+      {username: this.username, name: this.name, password: this.password }, (err, data) => {
+      console.log(`Пользователь ${this.username} создан`);
       callback(err, data);
       }
     );
@@ -23,8 +23,8 @@ class Profile {
 
   authorize(callback) {
     return ApiConnector.performLogin(
-      {nickName: this.nickName, password: this.password}, (err, data) => {
-        console.log(`Пользователь ${this.nickName} авторизован`);
+      {username: this.username, password: this.password}, (err, data) => {
+        console.log(`Пользователь ${this.username} авторизован`);
         callback(err, data);
       }
     );
@@ -66,34 +66,34 @@ function getStocks(callback) {
 // Вторая часть диплома
 function main(){
   const user1 = new Profile({
-    nickName: 'Vasya24',
+    username: 'Vasya24',
     name: {firstName: 'Vsiliy', lastName: 'Proshkin'},
     password: '12345'
   });
 
   const user2 = new Profile({
-    nickName: 'Foxy78',
+    username: 'Foxy78',
     name: {firstName: 'Ekaterina', lastName: 'Zemlyanskaya'},
     password: '54321'
   });
 
   user1.createUser((err, data) => {
     if (err) {
-        console.error(`Ошибка при создании аккаунта ${user1.nickName}`);
+        console.error(`Ошибка при создании аккаунта ${user1.username}`);
     }
     else {
-        console.log(`Аккаунт ${user1.nickName} успешно создан`);
+        console.log(`Аккаунт ${user1.username} успешно создан`);
         user1.authorize((err, data) => {
           if (err) {
             console.error('Не авторизован');
           } else {
-            console.log(`${user1.nickName} заходим в аккаунт`);
-            user.status = true;
+            console.log(`${user1.username} заходим в аккаунт`);
+            user1.status = true;
             user1.addMoney({ currency: 'RUB', amount: 500000 }, (err, data) => {
               if (err) {
-                console.error(`Ошибка при зачислении денег на счет пользователю ${user1.nickName}`);
+                console.error(`Ошибка при зачислении денег на счет пользователю ${user1.username}`);
               } else {
-                console.log(`Зачисленно 500000 руб на счет пользователю ${user1.nickName}`);
+                console.log(`Зачисленно 500000 руб на счет пользователю ${user1.username}`);
                 user1.money = true;
                 getStocks((err, data) => {
                   if (err) {
@@ -103,16 +103,16 @@ function main(){
                   if (err) {
                     console.error(`Ошибка конвертации из "RUB" в "NETCOIN"`);
                   } else {
-                    console.log(`Конвертация в 100 ${targetCurrency}`);
+                    console.log(`Конвертация в 100 'NETCOIN'`);
                     user2.createUser((err, data) => {
                       if (err) {
-                          console.error(`Ошибка при создании аккаунта ${user2.nickName}`);
+                          console.error(`Ошибка при создании аккаунта ${user2.username}`);
                       }
                       else {
-                          console.log(`Аккаунт ${user2.nickName} успешно создан`);
+                          console.log(`Аккаунт ${user2.username} успешно создан`);
                           user1.transferMoney({ to: 'Foxy78', amount: 100 }, (err, data) => {
                             if (err) {
-                              console.error(`Ошибка при попытке перевода валюты пользователю ${to}`);
+                              console.error(`Ошибка при попытке перевода валюты пользователю 'Foxy78'`);
                             } else {
                               console.log(`Пользователю переведено: 100`);
                             }
